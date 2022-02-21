@@ -1,0 +1,16 @@
+Computer:
+   Squares: 1 2 3 * 5 * * * *
+   Score: 14
+
+Human:
+   Squares: * * 3 4 * 6 * * 9 
+   Score: 36
+
+First Turn: Human
+Next Turn: Computer
+
+Dice:
+6 5
+3 5
+4 3
+6 6 

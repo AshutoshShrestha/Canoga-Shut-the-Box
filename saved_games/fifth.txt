@@ -1,0 +1,22 @@
+Computer:
+   Squares: * 2 * 4 5 * 7 8 9 10 *
+   Score: 34
+
+Human:
+   Squares: 1 2 3 4 * 6 7 8 9 10 *
+   Score: 36
+
+First Turn: Computer
+Next Turn: Human this is the one
+
+Dice:
+1 4
+3 2
+6 5
+6 5
+6 5
+3 2
+1 4
+6 5
+6 5
+6 4
