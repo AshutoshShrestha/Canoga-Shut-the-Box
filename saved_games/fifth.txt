@@ -7,7 +7,7 @@ Human:
    Score: 36
 
 First Turn: Computer
-Next Turn: Human this is the one
+Next Turn: Human
 
 Dice:
 1 4

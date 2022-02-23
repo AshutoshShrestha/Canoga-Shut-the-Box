@@ -89,7 +89,10 @@ vector<int> Computer::choose_a_move(int value, int moving_possibility, bool oppo
 
 	// returning by dereferencing player_moves and releasing the pointer memory
 	vector<int> best_moves = *player_moves;
-	delete player_moves;
+	for (auto &it : all_moves) {
+		it->clear();
+		delete it;
+	}
 	return best_moves;
 }
 

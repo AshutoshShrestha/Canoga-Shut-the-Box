@@ -1,0 +1,8 @@
+﻿  Computer.cpp
+c:\users\stha0\onedrive\desktop\code projects\opl_projects\canogac++_v10\computer.cpp(126): warning C4018: '<': signed/unsigned mismatch
+c:\users\stha0\onedrive\desktop\code projects\opl_projects\canogac++_v10\computer.cpp(127): warning C4018: '<': signed/unsigned mismatch
+c:\users\stha0\onedrive\desktop\code projects\opl_projects\canogac++_v10\computer.cpp(148): warning C4018: '<': signed/unsigned mismatch
+c:\users\stha0\onedrive\desktop\code projects\opl_projects\canogac++_v10\computer.cpp(209): warning C4018: '<': signed/unsigned mismatch
+c:\users\stha0\onedrive\desktop\code projects\opl_projects\canogac++_v10\computer.cpp(214): warning C4018: '<': signed/unsigned mismatch
+c:\users\stha0\onedrive\desktop\code projects\opl_projects\canogac++_v10\computer.cpp(245): warning C4018: '<': signed/unsigned mismatch
+  canogaC++_v10.vcxproj -> C:\Users\stha0\OneDrive\Desktop\Code Projects\OPL_Projects\canogaC++_v10\Debug\canogaC++_v10.exe

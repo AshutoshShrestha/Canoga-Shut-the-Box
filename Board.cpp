@@ -5,7 +5,7 @@
 
 // default constructor
 Board::Board() {
-	// default value
+	// default value 
 	squares = 9;
 	square_status = new int[9];
 	for (int i = 0; i < 9; i++) {

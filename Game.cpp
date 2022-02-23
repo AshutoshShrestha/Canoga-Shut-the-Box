@@ -51,7 +51,6 @@ Game::~Game() {
 		}
 	}
 	delete loaded_dice_rolls;
-	delete current_round;
 	delete player1;
 	delete player2;
 }

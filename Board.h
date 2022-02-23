@@ -22,7 +22,7 @@ public:
 	// selector
 	std::vector<int> get_uncovered_squares() const;
 	std::vector<int> get_covered_squares() const;
-	inline int * get_square_states() { return square_status; }
+	inline int * get_square_states() const { return square_status; }
 
 	void display();
 

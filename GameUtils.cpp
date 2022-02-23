@@ -171,7 +171,7 @@ Parameters:
 Return Value: none (void)
 Algorithm:
 			1)
-Assistance Received: none
+Assistance Received: Geeks4Geeks
 ********************************************************************* */
 void GameUtils::findCombinationsUtil(std::vector<std::vector<int> *> *all_possible_combinations, int arr[], int index, int num, int reducedNum) {
 	// Base condition
@@ -216,7 +216,7 @@ Parameters:
 Return Value: none (void)
 Algorithm:
 			1)
-Assistance Received: none
+Assistance Received: Geeks4Geeks
 ********************************************************************* */
 void GameUtils::findCombinations(std::vector<std::vector<int> *> *all_possible_combinations, int n) {
 	// array to store the combinations
@@ -225,6 +225,7 @@ void GameUtils::findCombinations(std::vector<std::vector<int> *> *all_possible_c
 
 	//find all combinations
 	findCombinationsUtil(all_possible_combinations, arr, 0, n, n);
+	delete[] arr;
 }
 
 /* *********************************************************************
@@ -237,13 +238,16 @@ Return Value: a Vector of Pointer of Vector of integers that contains the
 			  memory locations that hold all the combinations of moves that
 			  can be made from a given value.
 Algorithm:
-			1)
+			1) Call the recursive function to find all possible combination
+			from a given value.
 Assistance Received: none
 ********************************************************************* */
 std::vector<std::vector<int> *> GameUtils::all_possible_moves(int value) {
 	std::vector<std::vector<int> *> * all_moves = new std::vector<std::vector<int>*>();
 	findCombinations(all_moves, value);
-	return *all_moves;
+	std::vector<std::vector<int>*> all_possible_moves = *all_moves;
+	delete all_moves;
+	return all_possible_moves;
 }
 
 /* *********************************************************************

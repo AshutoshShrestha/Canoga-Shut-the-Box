@@ -1,3 +1,10 @@
+/************************************************************
+* Name:  Ashutosh Shrestha								   *
+* Project : <number> Canoga								   *
+* Class : <number> OPL				                       *
+* Date : 2/22/2022				                           *
+************************************************************/
+
 #include <stdio.h>
 #include <iostream>
 #include "Game.h"
@@ -17,7 +24,6 @@ namespace fs = std::experimental::filesystem;
 void new_game();
 bool load_game();
 void show_menu();
-int * to_int_arr(string);
 
 /* *********************************************************************
 Function Name: main
@@ -119,31 +125,6 @@ void new_game() {
 	}
 }
 
-int * to_int_arr(std::string player_board_state, int * index) {
-	*index = 0;
-	int * player_board = new int[11];
-	for (int i = 0; i < player_board_state.length(); i++) {
-		char square_state = player_board_state[i];
-		if (square_state == '*') {
-			player_board[*index] = 1;
-			++(*index);
-		}
-		else if (isdigit(square_state)) {
-			bool quit = false;
-			while (!quit) {
-				if (i < player_board_state.length() && !isdigit(player_board_state[i + 1])) {
-					quit = true;
-					continue;
-				}
-				i++;
-			}
-			player_board[*index] = 0;
-			++(*index);
-		}
-	}
-	return player_board;
-}
-
 /* *********************************************************************
 Function Name: load_game
 Purpose: To load a game from a file.
@@ -172,7 +153,7 @@ bool load_game() {
 	if (!fs::is_directory(path) ||
 		!fs::exists(fs::current_path())) {
 		std::cout << "There are no saved games." << std::endl;
-		Sleep(4000);
+		Sleep(3000);
 		return false;
 	}
 
@@ -280,6 +261,12 @@ bool load_game() {
 		first_turn = lines[8].substr(lines[8].find(":") + 2, -1);
 		next_turn = lines[9].substr(lines[9].find(":") + 2, -1);
 
+		if ((first_turn != player1_name && first_turn != player2_name) ||
+			(next_turn != player1_name && next_turn != player2_name)) {
+			cout << "Something went wrong. File could not be loaded" << endl;
+			return false;
+		}
+
 		std::string player1_board_state, player2_board_state;
 		player1_board_state = lines[1].substr(lines[1].find(":") + 2, -1);
 		player2_board_state = lines[5].substr(lines[5].find(":") + 2, -1);
@@ -380,8 +367,6 @@ bool load_game() {
 		Game saved_game(p1, p2, next_turn, index, dice_rolls, play_mode);
 		saved_game.start_game();
 		saved_game.end_game();
-		delete[] player1_board;
-		delete[] player2_board;
 		return true;
 	}
 	else {
