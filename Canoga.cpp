@@ -1,6 +1,6 @@
 /************************************************************
 * Name:  Ashutosh Shrestha								   *
-* Project : <number> Canoga								   *
+* Project : Canoga 1								   *
 * Class : <number> OPL				                       *
 * Date : 2/22/2022				                           *
 ************************************************************/
@@ -39,6 +39,8 @@ Assistance Received: none
 ********************************************************************* */
 int main() {
 	int action;
+
+	// quit boolean will be true only when the user wants to quit
 	bool quit = false;
 	// ask user to choose multiplayer or singleplayer
 
@@ -57,6 +59,7 @@ int main() {
 		case 3:
 			break;
 		default:
+			// clearing cin to avoid error in future inputs
 			std::cout << "Invalid choice." << endl;
 			std::cin.clear();
 			std::cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -117,6 +120,7 @@ void new_game() {
 			newGame.end_game();
 		}
 		else {
+			// clearing cin to avoid error in future inputs
 			std::cout << "Invalid choice." << endl;
 			valid_choice = false;
 			std::cin.clear();
@@ -191,6 +195,7 @@ bool load_game() {
 				return false;
 			}
 			std::cout << "Invalid file." << std::endl;
+			// clearing cin to avoid error in future inputs
 			std::cin.clear();
 			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 			valid_file = false;
@@ -271,8 +276,10 @@ bool load_game() {
 		player1_board_state = lines[1].substr(lines[1].find(":") + 2, -1);
 		player2_board_state = lines[5].substr(lines[5].find(":") + 2, -1);
 
+		// players whose internal members will be set using the information from the saved file
 		Player * p1, *p2;
 
+		// play_mode 1 = single player, 2 = multi player
 		int play_mode = 2;
 
 		if (player1_name != "Computer") {
@@ -295,8 +302,10 @@ bool load_game() {
 			exit(1);
 		}
 
+		// board dynamic int arrays whose elements will be set by player board state from the loaded file
 		int * player1_board = new int[11], *player2_board = new int[11];
 
+		// int variable to count the number of squares
 		int index = 0;
 		for (int i = 0; i < player1_board_state.length(); i++) {
 			char square_state = player1_board_state[i];
@@ -318,6 +327,7 @@ bool load_game() {
 			}
 		}
 
+		// resetting index
 		index = 0;
 		for (int i = 0; i < player2_board_state.length(); i++) {
 			char square_state = player2_board_state[i];

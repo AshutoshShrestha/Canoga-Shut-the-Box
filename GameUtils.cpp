@@ -2,10 +2,24 @@
 #include <iostream>
 #include <vector>
 
-// default constructor
+/* *********************************************************************
+Function Name: GameUtils
+Purpose: To construct a GameUtils object
+Parameters: none
+Return Value: a GameUtils object
+Algorithm:
+Assistance Received: none
+********************************************************************* */
 GameUtils::GameUtils() {}
 
-// destructor
+/* *********************************************************************
+Function Name: ~GameUtils
+Purpose: To destroy/cleanup a GameUtils object
+Parameters: none
+Return Value: 
+Algorithm:
+Assistance Received: none
+********************************************************************* */
 GameUtils::~GameUtils() {}
 
 /* *********************************************************************
@@ -37,6 +51,8 @@ Algorithm:
 Assistance Received: none
 ********************************************************************* */
 int GameUtils::check_valid(int value, int squares, std::vector<std::vector<int>*> available_cover_moves, std::vector<std::vector<int>*> available_uncover_moves) {
+	// an int variable that will hold the return numeric constant value
+	// assigning 3 at the beginning to indicate that by default, the user can both cover or uncover
 	int retVal = 3;
 
 	std::cout << "Available cover moves: " << available_cover_moves.size();
@@ -62,15 +78,19 @@ int GameUtils::check_valid(int value, int squares, std::vector<std::vector<int>*
 	std::cout << std::endl;
 
 	if (available_cover_moves.empty() && available_uncover_moves.empty()) {
+		// cannot cover or uncover
 		retVal = 0;
 	}
 	else if (available_uncover_moves.empty()) {
+		// can only cover
 		retVal = 1;
 	}
 	else if (available_cover_moves.empty()) {
+		// can only uncover
 		retVal = 2;
 	}
 	else {
+		// can both cover or uncover
 		retVal = 3;
 	}
 
@@ -149,7 +169,7 @@ Algorithm:
 Assistance Received: none
 ********************************************************************* */
 bool GameUtils::check_unique(std::vector<int> one_combination) {
-	for (auto i = 0; i < one_combination.size() - 1; i++) {
+	for (auto i = 0; i < (int)one_combination.size() - 1; i++) {
 		for (auto j = i + 1; j < one_combination.size(); j++) {
 			if (one_combination[i] == one_combination[j]) {
 				return false;
@@ -163,14 +183,32 @@ bool GameUtils::check_unique(std::vector<int> one_combination) {
 Function Name: findCombinationsUtil
 Purpose: To
 Parameters:
-			all_possible_combinations,
-			arr,
-			index,
-			num,
-			reducedNum,
+			all_possible_combinations, a Pointer to Vector of Vectors.
+			It holds all the possible combinations of moves a user
+			can make from a given dice roll value.
+			arr, an integer array. It holds one possible combination
+			from all possible combinations of moves a user can make.
+			index, an integer variable. It holds the index of array
+			which holds one possible combination out of all combinations.
+			num, an integer variable. It holds the value from which
+			all moves need to be calculated from. This value is the sum
+			of both dice rolled values of a player.
+			reducedNum, an integer variable. It holds the number of levels
+			in the recursive tree when the function findCombinationsUtil 
+			is called recursively.
 Return Value: none (void)
 Algorithm:
-			1)
+			1) If reducedNum is less than 0, then return from the function.
+			2) If reducedNum is equal to 0, then form a vector and copy
+			the elements from arr into the vector one_possible_combination.
+			Check if the combination has all unique elements. If yes, push
+			the vector into the all_possible_combinations vector.
+			3) If reducedNum is greater than 0, then find the previous
+			number stored in arr, if none then use 1.
+			4) Loop from the previous number upto passed num value.
+			5) Set the value at index position of array to k.
+			6) Recursively call findCombinationsUtil function with
+			reducedNum.
 Assistance Received: Geeks4Geeks
 ********************************************************************* */
 void GameUtils::findCombinationsUtil(std::vector<std::vector<int> *> *all_possible_combinations, int arr[], int index, int num, int reducedNum) {
@@ -178,7 +216,7 @@ void GameUtils::findCombinationsUtil(std::vector<std::vector<int> *> *all_possib
 	if (reducedNum < 0)
 		return;
 
-	// If combination is found, print it
+	// If combination is found, push it to vector
 	if (reducedNum == 0)
 	{
 		std::vector<int> * one_possible_combination = new std::vector<int>();
@@ -211,11 +249,16 @@ void GameUtils::findCombinationsUtil(std::vector<std::vector<int> *> *all_possib
 Function Name: findCombinations
 Purpose: To
 Parameters:
-			all_possible_combinations,
-			n,
+			all_possible_combinations, a Pointer to Vector of Vectors.
+			It holds all the possible combinations of moves a user
+			can make from a given dice roll value.
+			n, an integer variable. It holds the value from which
+			all moves need to be calculated from. This value is the sum
+			of both dice rolled values of a player.
 Return Value: none (void)
 Algorithm:
-			1)
+			1) call findCombinationsUtil function to initiate the 
+			recursive sequence.
 Assistance Received: Geeks4Geeks
 ********************************************************************* */
 void GameUtils::findCombinations(std::vector<std::vector<int> *> *all_possible_combinations, int n) {
@@ -243,6 +286,7 @@ Algorithm:
 Assistance Received: none
 ********************************************************************* */
 std::vector<std::vector<int> *> GameUtils::all_possible_moves(int value) {
+	// a vector pointer that will hold all possible moves from a given value
 	std::vector<std::vector<int> *> * all_moves = new std::vector<std::vector<int>*>();
 	findCombinations(all_moves, value);
 	std::vector<std::vector<int>*> all_possible_moves = *all_moves;
@@ -278,11 +322,11 @@ Assistance Received: none
 std::vector<std::vector<int>*> GameUtils::all_available_cover_moves(std::vector<std::vector<int>*> all_possible_moves, std::vector<int> currentPlayer_uncovered_sq) {
 	// check currentPlayer's uncovered squares with all_possible_cover_moves
 	std::vector<std::vector<int>*> all_available_moves;
-	for (auto i = 0; i < all_possible_moves.size(); i++) {
+	for (auto i = 0; i < (int) all_possible_moves.size(); i++) {
 		bool found = false;;
-		for (auto j = 0; j < all_possible_moves[i]->size(); j++) {
+		for (auto j = 0; j < (int) all_possible_moves[i]->size(); j++) {
 			found = false;
-			for (auto k = 0; k < currentPlayer_uncovered_sq.size(); k++) {
+			for (auto k = 0; k < (int) currentPlayer_uncovered_sq.size(); k++) {
 				if (all_possible_moves[i]->at(j) == currentPlayer_uncovered_sq[k]) {
 					found = true;
 					break;
@@ -333,11 +377,11 @@ Assistance Received: none
 std::vector<std::vector<int>*> GameUtils::all_available_uncover_moves(std::vector<std::vector<int>*> all_possible_moves, std::vector<int> nextPlayer_covered_sq, int advantage_square) {
 	// check nextPlayer's covered squares with all_possible_uncover_moves
 	std::vector<std::vector<int>*> all_available_moves;
-	for (auto i = 0; i < all_possible_moves.size(); i++) {
+	for (auto i = 0; i < (int) all_possible_moves.size(); i++) {
 		bool found = false;;
-		for (auto j = 0; j < all_possible_moves[i]->size(); j++) {
+		for (auto j = 0; j < (int) all_possible_moves[i]->size(); j++) {
 			found = false;
-			for (auto k = 0; k < nextPlayer_covered_sq.size(); k++) {
+			for (auto k = 0; k < (int )nextPlayer_covered_sq.size(); k++) {
 				if (all_possible_moves[i]->at(j) == nextPlayer_covered_sq[k]) {
 					found = true;
 					break;

@@ -13,16 +13,45 @@
 
 namespace fs = experimental::filesystem;
 
-// program will crash if default constructor is called because players aren't initialized
+/* *********************************************************************
+Function Name: Round
+Purpose: To construct a Round object (program will crash if default 
+		 constructor is called because players aren't initialized)
+Parameters: none
+Return Value: a Round object
+Algorithm:
+Assistance Received: none
+********************************************************************* */
 Round::Round() {}
 
+/* *********************************************************************
+Function Name: Round
+Purpose: To construct a Round object
+Parameters: 
+			player1, player2, Player pointer variables that hold the 
+			memory location of the players playing in the round.
+Return Value: a Player object
+Algorithm:
+			1) Set the passed player memory locations to the internal
+			pointer variables of the object.
+			2) Set the default wining score as 0.
+Assistance Received: none
+********************************************************************* */
 Round::Round(Player* player1, Player* player2) {
 	this->player1 = player1;
 	this->player2 = player2;
 	this->winning_score = 0;
 }
 
-// destructor
+/* *********************************************************************
+Function Name: ~Round
+Purpose: To construct a Round object
+Parameters: none
+Return Value: 
+Algorithm:
+			1) Delete the current view object.
+Assistance Received: none
+********************************************************************* */
 Round::~Round() {
 	delete view;
 }
@@ -46,6 +75,7 @@ Algorithm:
 Assistance Received: none
 ********************************************************************* */
 void Round::start_round() {
+	// this will help generate random dice values every time
 	srand((u_int)time(NULL));
 
 	// choose number of squares
@@ -65,13 +95,16 @@ void Round::start_round() {
 		player2->initialize_board(squares);
 	}
 
+	// view object that will help display the current player board states
 	view = new BoardView(player1, player2);
 
+	// game utils object that will provide functionalities to validate the user input
 	GameUtils game_utils;
 
 	// variable that denotes if it is the first turn of the round
 	bool first_turn_round = true;
 
+	// if there are already a current player and next players set, then no need to decide who goes first
 	if (currentPlayer == NULL && nextPlayer == NULL) {
 		decide_first_player(squares);
 	}
@@ -134,7 +167,7 @@ void Round::start_round() {
 				value += it;
 			}
 
-			// check if the rolled value is valid to keep the next turn
+			// vector of vector pointers that holds all of the possibles moves for a player for a given dice value
 			vector<vector<int>*> all_moves = game_utils.all_possible_moves(value);
 
 			int moving_possibility = game_utils.check_valid(
@@ -157,6 +190,7 @@ void Round::start_round() {
 				continue;
 			}
 
+			// a boolean to indicate whether the user has chosen a valid move
 			bool valid_move_chosen = false;
 			bool opponent_is_computer = nextPlayer->get_name() == "Computer" ? true : false;
 			while (!valid_move_chosen) {
@@ -193,17 +227,23 @@ void Round::start_round() {
 				view->display_boards();
 				continue;
 			}
-
 			break;
 		}
 		case 3:
-			round_over = true;
-			game_over = true;
+			char confirm_quit;
+			cout << "Are you sure (Y/N)? (make sure to save the game)";
+			cin >> confirm_quit;
+			if (confirm_quit == 'y' || confirm_quit == 'Y') {
+				round_over = true;
+				game_over = true;
+				break;
+			}
 			break;
 		default:
 			cout << "Invalid action." << endl;
 			cin.clear();
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			break;
 		}
 	}
 }
@@ -280,7 +320,8 @@ Return Value: none (void)
 Algorithm:
 			1) Check if a player had the first turn on the last round they played.
 			2) Call the function to provide advantage accordingly.
-			3) Roll the dice for both players.
+			3) Check if there are loaded dice rolls already available.
+			3) If not, then roll the dice for both players.
 			4) The player with the greater total sum value of dices plays the first
 			turn. If both players roll equal values, the process will repeat until
 			a winner is decided.
@@ -299,15 +340,38 @@ void Round::decide_first_player(int squares) {
 	else if (player2->had_first_turn()) {
 		give_advantage(player1, previous_winner_score, squares);
 	}
+	// int variables to hold the sum of dice values rolled by the two players
 	int player1Total = 0, player2Total = 0;
 	vector<int> player1_dice_val;
 	vector<int> player2_dice_val;
-	while (player1Total == player2Total) {
-		player1_dice_val = player1->roll_dice(false);
-		player1Total = player1_dice_val[0] + player1_dice_val[1];
-		player2_dice_val = player2->roll_dice(false);
-		player2Total = player2_dice_val[0] + player2_dice_val[1];
+
+	if (l_dice_rolls != NULL || !l_dice_rolls->empty()) {
+		player1_dice_val = l_dice_rolls->front();
+		l_dice_rolls->pop();
+		cout << player1->get_name() << " rolled from a loaded file:  ";
+		for (auto & it : player1_dice_val) {
+			player1Total += it;
+			cout << it << " ";
+		}
+		cout << endl;
+		player2_dice_val = l_dice_rolls->front();
+		l_dice_rolls->pop();
+		cout << player2->get_name() << " rolled from a loaded file: ";
+		for (auto & it : player2_dice_val) {
+			player2Total += it;
+			cout << it << " ";
+		}
+		cout << endl;
 	}
+	else {
+		while (player1Total == player2Total) {
+			player1_dice_val = player1->roll_dice(false);
+			player1Total = player1_dice_val[0] + player1_dice_val[1];
+			player2_dice_val = player2->roll_dice(false);
+			player2Total = player2_dice_val[0] + player2_dice_val[1];
+		}
+	}
+	
 	if (player1Total > player2Total) {
 		currentPlayer = player1;
 		nextPlayer = player2;
@@ -362,6 +426,7 @@ Algorithm:
 Assistance Received: none
 ********************************************************************* */
 bool Round::end_round() {
+
 	if (winner == player1->get_name()) {
 		if (!(player1->set_score(player1->get_score() + winning_score))) {
 			cerr << "Error while setting score." << endl;
@@ -373,7 +438,7 @@ bool Round::end_round() {
 		}
 	}
 	else {
-		if (!(player2->set_score(player1->get_score() + winning_score))) {
+		if (!(player2->set_score(player2->get_score() + winning_score))) {
 			cerr << "Error while setting score." << endl;
 			exit(1);
 		}
@@ -578,7 +643,7 @@ void Round::save_game(bool first_turn_round, int squares) {
 			valid_filename = false;
 		}
 		else {
-			for (int i = 0; i < filename.length(); i++) {
+			for (int i = 0; i < (int)filename.length(); i++) {
 				if (filename[i] == '?' ||
 					filename[i] == '/' ||
 					filename[i] == '\\' ||
@@ -630,7 +695,7 @@ void Round::save_game(bool first_turn_round, int squares) {
 		myfile << "Dice: \n";
 
 		size_t size = l_dice_rolls->size();
-		for (auto i = 0; i < size; i++) {
+		for (auto i = 0; i < (int)size; i++) {
 			myfile << "   ";
 			vector<int> dice_roll = l_dice_rolls->front();
 			for (auto& iit : dice_roll) {

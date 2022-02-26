@@ -3,16 +3,43 @@
 #include <iostream>
 #include <string>
 
-// parameterized constructor
+/* *********************************************************************
+Function Name: BoardView
+Purpose: To construct a BoardView object
+Parameters: 
+			player1, player2, two Player pointer variables. They hold the 
+			memory locations of the two players playing in a round in a 
+			game.
+Return Value: a BoardView object
+Algorithm:
+			1) Set the player pointers as the parameters passed
+Assistance Received: none
+********************************************************************* */
 BoardView::BoardView(Player * player1, Player * player2) {
 	this->player1 = player1;
 	this->player2 = player2;
 }
 
 // program will crash if default constructor is called because player1 and player2 won't have been initialized
+/* *********************************************************************
+Function Name: BoardView
+Purpose: To construct a default BoardView object (program will crash if called
+because players will have been initiailzed with this constructor)
+Parameters: none
+Return Value: a BoardView object
+Algorithm:
+Assistance Received: none
+********************************************************************* */
 BoardView::BoardView() {}
 
-// destructor
+/* *********************************************************************
+Function Name: ~BoardView
+Purpose: To destroy/cleanup a BoardView object
+Parameters: none
+Return Value: a BoardView object
+Algorithm:
+Assistance Received: none
+********************************************************************* */
 BoardView::~BoardView() {}
 
 /* *********************************************************************

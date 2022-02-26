@@ -3,7 +3,17 @@
 #include <vector>
 #include <string>
 
-// default constructor
+/* *********************************************************************
+Function Name: Board
+Purpose: To construct a default board object
+Parameters: none
+Return Value: a Board object
+Algorithm:
+			1) Set default number of squares as 9.
+			2) Create a dynamic array square_status with squares as the size.
+			3) Initialize all members of square_status to 0.
+Assistance Received: none
+********************************************************************* */
 Board::Board() {
 	// default value 
 	squares = 9;
@@ -14,7 +24,19 @@ Board::Board() {
 	}
 }
 
-// parameterized constructor
+/* *********************************************************************
+Function Name: Board
+Purpose: To construct a default board object
+Parameters: 
+			n, an integer variable passed by value. It holds the number of
+			squares in a row the user chooses to play with.
+Return Value: a Board object
+Algorithm:
+			1) Set default number of squares as the paramter passed.
+			2) Create a dynamic array square_status with squares as the size.
+			3) Initialize all members of square_status to 0.
+Assistance Received: none
+********************************************************************* */
 Board::Board(int n) {
 	squares = n;
 	square_status = new int[n];
@@ -24,13 +46,34 @@ Board::Board(int n) {
 	}
 }
 
-// parameterized constructor
+/* *********************************************************************
+Function Name: Board
+Purpose: To construct a default board object
+Parameters: 
+			sq, an integer variable passed by value. It holds the number of
+			squares in a row the user chooses to play with.
+			player_board, a dyamic int array. It holds a board state passed
+			externally to be initialized as a player's current board state.
+Return Value: a Board object
+Algorithm:
+			1) Set default number of squares as sq.
+			2) Assign square_status to the player_board parameter.
+Assistance Received: none
+********************************************************************* */
 Board::Board(int sq, int * player_board) {
 	squares = sq;
 	square_status = player_board;
 }
 
-// destructor
+/* *********************************************************************
+Function Name: ~Board
+Purpose: To destroy/cleanup Board objects
+Parameters: none
+Return Value: none
+Algorithm:
+			1) delete square_status array.
+Assistance Received: none
+********************************************************************* */
 Board::~Board() {
 	delete[] square_status;
 }

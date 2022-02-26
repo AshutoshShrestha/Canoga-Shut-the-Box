@@ -3,7 +3,16 @@
 #include <algorithm>
 #include <string>
 
-// default constructor
+/* *********************************************************************
+Function Name: Human
+Purpose: To construct a Human object
+Parameters: none
+Return Value: a Human object
+Algorithm:
+			1) Set the default name is "Anonymous".
+			2) Set the previous round score as 0.
+Assistance Received: none
+********************************************************************* */
 Human::Human() {
 	name = "Anonymous";
 	if (!set_previous_round_score(0) || !set_previous_round_score(0)) {
@@ -12,7 +21,18 @@ Human::Human() {
 	}
 }
 
-// parameterized constructor
+/* *********************************************************************
+Function Name: Human
+Purpose: To construct a Human object
+Parameters: 
+			player_name, a string variable passed by value. It holds a
+			player's name passed by the user.
+Return Value: a Human object
+Algorithm:
+			1) Set the passed parameter as the name of the object.
+			2) Set the previous round score as 0.
+Assistance Received: none
+********************************************************************* */
 Human::Human(std::string player_name) {
 	name = player_name;
 	if (!set_previous_round_score(0) || !set_previous_round_score(0)) {
@@ -21,7 +41,14 @@ Human::Human(std::string player_name) {
 	}
 }
 
-// destructor
+/* *********************************************************************
+Function Name: ~Human
+Purpose: To destroy/cleanup a Human object
+Parameters: none
+Return Value:
+Algorithm:
+Assistance Received: none
+********************************************************************* */
 Human::~Human() {}
 
 /* *********************************************************************
@@ -48,7 +75,9 @@ Algorithm:
 Assistance Received: none
 ********************************************************************* */
 std::vector<int> Human::choose_a_move(int value, int moving_possibility, bool opponent_is_computer) {
+	// vector of ints to hold the squares that the player wishes to cover or uncover
 	std::vector<int> user_choices;
+	// string variable to hold the user's choice while choosing to move
 	std::string action;
 	bool valid_action = false;
 	while (!valid_action) {
@@ -83,6 +112,7 @@ std::vector<int> Human::choose_a_move(int value, int moving_possibility, bool op
 			valid_action = false;
 		}
 	}
+	// int variable to hold the sum of the numbers entered by the user
 	int sum_of_choices = 0;
 	(action == "c" || action == "C") ? user_choices.push_back(1) : user_choices.push_back(2);
 	while (sum_of_choices != value) {

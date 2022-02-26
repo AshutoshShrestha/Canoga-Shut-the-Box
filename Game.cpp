@@ -6,7 +6,15 @@
 #include <iostream>
 #include <string>
 
-// default constructor
+/* *********************************************************************
+Function Name: Game
+Purpose: To construct a default Game object
+Parameters: none
+Return Value: a Game object
+Algorithm:
+			1) Set the default values for all members of game object
+Assistance Received: none
+********************************************************************* */
 Game::Game() {
 	// default mode player1 vs player2
 	mode = 2;
@@ -18,7 +26,18 @@ Game::Game() {
 	current_round = NULL;
 }
 
-// parameterized constructor
+/* *********************************************************************
+Function Name: Game
+Purpose: To construct a Game object
+Parameters: 
+			game_mode, an integer variable to indicate if the user chose
+			single player or multiplayer mode. 
+Return Value: a Computer object
+Algorithm:
+			1) Set the parameter as the object's member and set some
+			default values for other members.
+Assistance Received: none
+********************************************************************* */
 Game::Game(int game_mode) {
 	mode = game_mode;
 	is_new_game = true;
@@ -29,7 +48,27 @@ Game::Game(int game_mode) {
 	current_round = NULL;
 }
 
-// parameterized constructor
+/* *********************************************************************
+Function Name: Game
+Purpose: To construct a Game object while loading from a file
+Parameters: 
+			p1, p2, two Player pointers that hold the memory location to
+			the two players playing the game. 
+			next, a string variable passed by value. It holds the name
+			of the player who should be the current player in the round.
+			sq, an integer variable passed by value. It holds the number 
+			of squares the player player chose to play with.
+			dice_rolls, a pointer Queue of vectors of int. It holds the 
+			dice rolls that have been loaded from the file and should be
+			played by the player in the subsequent turns.
+			game_mode, an integer variable to indicate if the user chose
+			single player or multiplayer mode.
+Return Value: a Game object
+Algorithm:
+			1) Set corresponding parameters with the internal members of
+			the Game object.
+Assistance Received: none
+********************************************************************* */
 Game::Game(Player * p1, Player * p2, string next, int sq, queue<vector<int>> * dice_rolls, int game_mode) {
 	mode = game_mode;
 	player1 = p1;
@@ -41,11 +80,22 @@ Game::Game(Player * p1, Player * p2, string next, int sq, queue<vector<int>> * d
 	current_round = new Round(p1, p2);
 }
 
-// destructor
+/* *********************************************************************
+Function Name: ~Game
+Purpose: To destroy/cleanup a Game object
+Parameters: none
+Return Value: 
+Algorithm:
+			1) Check if there is anything in loaded_dice_rolls. If it has
+			any vectors in it, clear up the vectors and pop it off the queue.
+			2) Delete the loaded_dice_rolls queue pointer and the player 
+			pointers.
+Assistance Received: none
+********************************************************************* */
 Game::~Game() {
 	if (loaded_dice_rolls != NULL) {
 		size_t size = loaded_dice_rolls->size();
-		for (int i = 0; i < size; i++) {
+		for (int i = 0; i < (int)size; i++) {
 			loaded_dice_rolls->front().clear();
 			loaded_dice_rolls->pop();
 		}
@@ -70,6 +120,7 @@ Algorithm:
 Assistance Received: none
 ********************************************************************* */
 void Game::start_game() {
+	// will be true if game should be over
 	bool quit = false;
 	Player * p1, *p2;
 	while (!quit) {
@@ -156,12 +207,16 @@ void Game::initialize(Player *p1, Player *p2) {
 	this->player1 = p1;
 	this->player2 = p2;
 
+	// will be true when the game should be finished
 	bool end_game = false;
 	while (!end_game) {
-		// initialize the round
+		// checking if this is a new game or a loaded game
 		if (is_new_game) {
+			// initialize the round
 			current_round = new Round(p1, p2);
 		}
+
+		// Player pointers to hold the memory addresses of the two players
 		Player *curr_player, *next_player;
 		if (!is_new_game) {
 			if (p1->get_name() == next_turn) {
@@ -183,6 +238,7 @@ void Game::initialize(Player *p1, Player *p2) {
 		if (current_round->end_round()) {
 			end_game = true;
 		}
+		// clearing the heap
 		delete current_round;
 		player1->clear_board();
 		player2->clear_board();

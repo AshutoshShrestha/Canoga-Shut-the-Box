@@ -3,14 +3,29 @@
 #include <string>
 #include <iostream>
 
-// default constructor
+/* *********************************************************************
+Function Name: Player
+Purpose: To construct a Player object
+Parameters: none
+Return Value: a Player object
+Algorithm:
+			1) Set the default values of the member variabes
+Assistance Received: none
+********************************************************************* */
 Player::Player() {
 	score = 0;
 	first_turn = false;
 	advantage_square = 0;
 }
 
-// destructor
+/* *********************************************************************
+Function Name: ~Player
+Purpose: To destroy/cleanup a Player object
+Parameters: none
+Return Value:
+Algorithm:
+Assistance Received: none
+********************************************************************* */
 Player::~Player() {}
 
 /* *********************************************************************
@@ -29,7 +44,7 @@ Algorithm:
 Assistance Received: none
 ********************************************************************* */
 std::vector<int> Player::roll_dice(bool rollOne) {
-	// returns a number from 1 to 6 (simulating rolling a dice)
+	// a vector of ints to hold the random dice values that will be assigned to a player
 	std::vector<int> dice_values;
 	if (rollOne) {
 		dice_values.push_back((rand() % 6) + 1);

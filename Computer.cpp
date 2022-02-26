@@ -1,7 +1,16 @@
 #include "Computer.h"
 #include <iostream>
 
-// calling default constructor will crash the program since opponent is not initialized
+/* *********************************************************************
+Function Name: Computer
+Purpose: To construct a default computer object
+Parameters: none
+Return Value: a Computer object
+Algorithm:
+			1) Set the helper as false.
+			2) Set previous round scores as 0.
+Assistance Received: none
+********************************************************************* */
 Computer::Computer() {
 	helper = false;
 	if (!set_previous_round_score(0) || !set_previous_round_score(0)) {
@@ -10,7 +19,19 @@ Computer::Computer() {
 	}
 }
 
-// parameterized constructor
+/* *********************************************************************
+Function Name: Computer
+Purpose: To construct a computer object with a preset opponent player
+Parameters:	
+			opp_player, a Player pointer that stores the memory location
+			of the Human player who is playing as the opponent.
+Return Value: a Computer object
+Algorithm:
+			1) Set the helper as false.
+			2) Set the opponent player.
+			3) Set previous round scores as 0.
+Assistance Received: none
+********************************************************************* */
 Computer::Computer(Player * opp_player) {
 	helper = false;
 	opponent = opp_player;
@@ -20,7 +41,22 @@ Computer::Computer(Player * opp_player) {
 	}
 }
 
-// parameterized constructor
+/* *********************************************************************
+Function Name: Computer
+Purpose: To construct a helper computer object
+Parameters: 
+			is_helper, a boolean variable passed by value. It holds true
+			if the object to be constructed should be a helper and vice
+			versa.
+			opp_player, a Player pointer that stores the memory location
+			of the Human player who is playing as the opponent.
+Return Value: a helper Computer object
+Algorithm:
+			1) Set the helper as true.
+			2) Set the opponent player.
+			3) Set previous round scores as 0.
+Assistance Received: none
+********************************************************************* */
 Computer::Computer(bool is_helper, Player *opp_player) {
 	helper = true;
 	opponent = opp_player;
@@ -30,7 +66,14 @@ Computer::Computer(bool is_helper, Player *opp_player) {
 	}
 }
 
-// destuctor
+/* *********************************************************************
+Function Name: Computer
+Purpose: To destroy/clean a Computer object
+Parameters: none
+Return Value: none
+Algorithm:
+Assistance Received: none
+********************************************************************* */
 Computer::~Computer() {}
 
 /* *********************************************************************
@@ -56,9 +99,14 @@ Algorithm:
 Assistance Received: none
 ********************************************************************* */
 vector<int> Computer::choose_a_move(int value, int moving_possibility, bool opponent_is_computer) {
+	// a variable that will provide the functionalities to calculate things like best moves, all possible cover or uncover moves
 	GameUtils game_utils;
+	// a pointer variable that stores locations to a list of ints which will be played as the Computer player's moves
 	vector<int> *player_moves = new vector<int>;
+	// a vector of pointer vectors of int that stores all possible moves a player can choose from to move
 	vector<vector<int>*> all_moves = game_utils.all_possible_moves(value);
+	// two vectors of pointer vectors of int that will store the available cover or uncover moves that a player can make
+	// in a present board state
 	vector<vector<int>*> available_cover_moves;
 	vector<vector<int>*> available_uncover_moves;
 
@@ -122,6 +170,7 @@ Algorithm:
 Assistance Received: none
 ********************************************************************* */
 vector<int>* Computer::find_best_move(vector<vector<int>*>moves, vector<int> *best_move, int indicator) {
+	// an int variable to hold the maximum numbered square from all combinations
 	int max_square = 1;
 	for (auto i = 0; i < moves.size(); i++) {
 		for (auto j = 0; j < moves.at(i)->size(); j++) {
@@ -159,8 +208,6 @@ vector<int>* Computer::find_best_move(vector<vector<int>*>moves, vector<int> *be
 		(best_move->at(0) == 1) ? cout << "Because covering" : cout << "Because uncovering";
 		cout << " the largest possible values maximizes winning score." << endl;
 	}
-
-
 	return best_move;
 
 }
@@ -238,6 +285,8 @@ Algorithm:
 Assistance Received: none
 ********************************************************************* */
 bool Computer::roll_one() {
+	// a boolean variable that indicated whether the player will roll one (true)
+	// or roll two (false)
 	bool rollOne = true;
 
 	cout << get_name() << " decided to ";
